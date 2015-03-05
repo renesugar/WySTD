@@ -25,9 +25,10 @@
 
 package whiley.lang
 
+import string from whiley.lang.ASCII
+
 import uint from whiley.lang.Int
 
-// convert a byte into a string
 public function toString(byte b) -> string:
     string r = "b"
     for i in 0..8:
