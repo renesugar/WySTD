@@ -25,31 +25,14 @@
 
 package whiley.lang
 
-// Define the notion of an ASCII character and an ASCII string
-type ASCII_char is (int x) where 0 <= x && x <= 255
-type ASCII_string is [ASCII_char]
+public type PrintWriter is {
+    method print(any),
+    method println(any),
+    method print_s(ASCII.string),
+    method println_s(ASCII.string)
+}
 
-public function isUpperCase(ASCII_char c) -> bool:
-    return 'A' <= c && c <= 'Z'
-
-public function isLowerCase(ASCII_char c) -> bool:
-    return 'a' <= c && c <= 'z'
-
-public function isLetter(ASCII_char c) -> bool:
-    return ('a' <= c && c <= 'z') || ('A' <= c && c <= 'Z')
-
-public function isDigit(ASCII_char c) -> bool:
-    return '0' <= c && c <= '9'
-
-public function isWhiteSpace(ASCII_char c) -> bool:
-    return c == ' ' || c == '\t' || c == '\n' || c == '\r'
-
-// Convert a byte stream into a string using the standard ASCII
-// encoding.
-public function fromASCII([byte] data) -> ASCII_string:
-    string r = ""
-    for b in data:
-        r = r ++ [Byte.toInt(b)]
-    return r
-
-
+public type Console is {
+    PrintWriter out,
+    ASCII.string[] args
+}

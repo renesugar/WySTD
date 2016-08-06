@@ -25,33 +25,69 @@
 
 package whiley.lang
 
-/**
- * Return the top element of the "stack".
- */
-public function top([int] list) -> int
-// Input list cannot be empty
-requires |list| > 0:
+// Define the 8bit ASCII character
+public type char is (int x) where 0 <= x && x <= 255
+
+// Define string as sequence of ASCII characters
+public type string is char[]
+
+// Convert an ASCII character into a byte.
+public function toByte(char v) -> byte:
     //
-    return list[|list|-1]
+    byte mask = 00000001b
+    byte r = 0b
+    int i = 0
+    while i < 8:
+        if (v % 2) == 1:
+            r = r | mask
+        v = v / 2
+        mask = mask << 1
+        i = i + 1
+    return r
+
+// Convert an ASCII string into a list of bytes
+public function toBytes(string s) -> byte[]:
+    byte[] r = [0b; |s|]
+    int i = 0
+    while i < |s| where i >= 0:
+        r[i] = toByte(s[i])
+        i = i + 1
+    return r
+
+// Convert a list of bytes into an ASCII string
+public function fromBytes(byte[] data) -> string:
+    string r = [0; |data|]
+    int i = 0
+    while i < |data| where i >= 0:
+        r[i] = Byte.toInt(data[i])
+        i = i + 1
+    return r
+
+public function append(string s1, string s2) -> string:
+    string s3 = [0; |s1| + |s2|]
+    int i = 0
+    while i < |s3|:
+       if i < |s1|:
+          s3[i] = s1[i]
+       else:
+          s3[i] = s2[i-|s1|]
+       i = i + 1
+    return s3
+
+public function isUpperCase(char c) -> bool:
+    return 'A' <= c && c <= 'Z'
+
+public function isLowerCase(char c) -> bool:
+    return 'a' <= c && c <= 'z'
+
+public function isLetter(char c) -> bool:
+    return ('a' <= c && c <= 'z') || ('A' <= c && c <= 'Z')
+
+public function isDigit(char c) -> bool:
+    return '0' <= c && c <= '9'
+
+public function isWhiteSpace(char c) -> bool:
+    return c == ' ' || c == '\t' || c == '\n' || c == '\r'
 
 
-/**
- * Push an element onto the "stack".
- */
-public function push([int] list, int element) -> ([int] r)
-// Length of stack increases by one
-ensures |r| == |list| + 1:
-    //
-    return list ++ [element]
 
-/**
- * Pop an element off the "stack".
- */
-public function pop([int] list) -> ([int] r)
-// Input list cannot be empty
-requires |list| > 0
-// Length of list decreases by one
-ensures |r| == |list| - 1:
-    //
-    int end = |list| - 1
-    return list[0..end]

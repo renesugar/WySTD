@@ -26,6 +26,7 @@ package whiley.io
 
 import whiley.io.Reader
 import uint from whiley.lang.Int
+import string from whiley.lang.ASCII
 
 // ====================================================
 // File Reader
@@ -33,12 +34,12 @@ import uint from whiley.lang.Int
 public type Reader is  {
 
     // Read all bytes of this file in one go.
-    method readAll() -> [byte],
+    method readAll() -> byte[],
 
     // Reads at most a given number of bytes from the file.  This
     // operation may block if the number requested is greater than that
     // available.
-    method read(uint) -> [byte],
+    method read(uint) -> byte[],
 
     // Check whether the end-of-stream has been reached and, hence,
     // that there are no further bytes which can be read.
@@ -54,13 +55,13 @@ public type Reader is  {
 }
 
 public method Reader(string fileName) -> Reader:
-    NativeFile this = NativeFileReader(fileName)
+    NativeFile reader = NativeFileReader(fileName)
     return {
-        readAll: &( -> read(this)),
-        read: &(uint n -> read(this,n)),
-        hasMore: &( -> hasMore(this)),
-        close: &( -> close(this)),
-        available: &( -> available(this))
+        readAll: &( -> read(reader)),
+        read: &(uint n -> read(reader,n)),
+        hasMore: &( -> hasMore(reader)),
+        close: &( -> close(reader)),
+        available: &( -> available(reader))
     }
 
 // ====================================================
@@ -69,11 +70,11 @@ public method Reader(string fileName) -> Reader:
 type Writer is whiley.io.Writer.Writer
 
 public method Writer(string fileName) -> Writer:
-    NativeFile this = NativeFileWriter(fileName)
+    NativeFile reader = NativeFileWriter(fileName)
     return {
-        write: &([byte] data -> write(this,data)),
-        close: &( -> close(this)),
-        flush: &( -> flush(this))
+        write: &(byte[] data -> write(reader,data)),
+        close: &( -> close(reader)),
+        flush: &( -> flush(reader))
     }
 
 // ====================================================
@@ -100,10 +101,10 @@ private native method available(NativeFile f) -> uint
 private native method hasMore(NativeFile f) -> bool
 
 // read at most max bytes from native file
-private native method read(NativeFile f, int max) -> [byte]
+private native method read(NativeFile f, int max) -> byte[]
 
 // read as many bytes as possible from native file
-private native method read(NativeFile f) -> [byte]
+private native method read(NativeFile f) -> byte[]
 
 // write entire contents of native file
-private native method write(NativeFile f, [byte] data)
+private native method write(NativeFile f, byte[] data) -> uint

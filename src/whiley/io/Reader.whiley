@@ -23,59 +23,40 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-package whiley.lang
+package whiley.io
 
-public type normalised is (real x)
-    where 0.0 <= x && x <= 1.0
+import uint from whiley.lang.Int
+import string from whiley.lang.ASCII
 
-public function toString(real item) -> string:
-    return Any.toString(item)
 
-// Convert a string into an integer
-public function parse(string input) -> real|null:
-    //
-    int r = 0
-    int dps = 0
-    for i in 0..|input|:
-        char c = input[i]
-        if c == '.' && dps == 0:
-            dps = 1
-        else if !Char.isDigit(c):
-            return null
-        else:
-            r = r * 10
-            r = r + (int) (c - '0')
-            dps = dps * 10
-    // finally, perform division
-    real rr = (real) r
-    if dps > 0:
-        return rr / (real) dps
-    else:
-        return rr
+// =================================================================
+// Generic Reader
+// =================================================================
 
-// print real number to 10dp
-public function toDecimal(real x) -> string:
-    return toDecimal(x,10)
+// A generic reader represents an input stream of items (e.g. bytes or
+// characters), such as from a file, network socket, or a memory buffer.
 
-// the following is a convenience method.
-public function toDecimal(real x, int ndigits) -> string:
-    string r
-    if x < 0.0:
-        r = "-"
-        x = -x
-    else:
-        r = ""
-    int n / int d = x
-    char digit = (char) n / d
-    real rem = x - (real) digit
-    r = r ++ digit ++ "."
-    int i = 1
-    while i < ndigits && rem != 0.0:
-        rem = rem * 10.0
-        n / d = rem
-        digit = (char) n / d
-        rem = rem - (real) digit
-        r = r ++ digit
-        i = i + 1
-    // need to support rounding!
-    return r
+public type Reader is {
+
+    // Reads at most a given number of bytes from the stream.  This
+    // operation may block if the number requested is greater than that
+    // available.
+    method read(uint) -> byte[],
+
+    // Check whether the end-of-stream has been reached and, hence,
+    // that there are no further bytes which can be read.
+    method hasMore() -> bool,
+
+    // Closes this input stream thereby releasin any resources
+    // associated with it.
+    method close(),
+
+    // Return the number of bytes which can be safely read without
+    // blocking.
+    method available() -> uint,
+
+    // Space for additional operations defined by refinements of
+    // Reader
+    ...
+}
+

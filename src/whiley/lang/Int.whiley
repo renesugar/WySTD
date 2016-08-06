@@ -25,6 +25,9 @@
 
 package whiley.lang
 
+import string from whiley.lang.ASCII
+import char from whiley.lang.ASCII
+
 /**
  * Represents all signed integers representable in 8bits
  * of space in the two's complement representation.
@@ -99,11 +102,22 @@ public function toString(int item) -> string:
 // Convert an integer into a hex string
 public function toHexString(int item) -> string:
     string r = ""
+    int count = 0
+    int i = item
+    while i > 0:
+        int v = i / 16
+        int w = i % 16
+        count = count + 1
+        i = v
+    //
+    i = count
     while item > 0:
+        i = i - 1    
         int v = item / 16
         int w = item % 16
-        r = digits[w] ++ r
+        r[i] = digits[w]
         item = v
+    //
     return r
 
 // convert an integer into an unsigned byte
@@ -111,37 +125,43 @@ public function toUnsignedByte(u8 v) -> byte:
     //
     byte mask = 00000001b
     byte r = 0b
-    for i in 0..8:
+    int i = 0
+    while i < 8:
         if (v % 2) == 1:
             r = r | mask
         v = v / 2
         mask = mask << 1
+        i = i + 1
     return r
 
 // convert an arbitrary sized unsigned integer into a list of bytes in
 // little endian form.
-public function toUnsignedBytes(uint v) -> [byte]:
-    //
-    [byte] bytes = []
-    // do-while is needed here
-    byte r = 0b
-    byte mask = 00000001b
-    for i in 0..8:
-        if (v % 2) == 1:
-            r = r | mask
-        v = v / 2
-        mask = mask << 1
-    bytes = bytes ++ [r]
-    while v > 0:
-        r = 0b
-        mask = 00000001b
-        for i in 0..8:
-            if (v % 2) == 1:
-                r = r | mask
-            v = v / 2
-            mask = mask << 1
-        bytes = bytes ++ [r]
-    return bytes
+// public function toUnsignedBytes(uint v) -> [byte]:
+//     //
+//     [byte] bytes = []
+//     // do-while is needed here
+//     byte r = 0b
+//     byte mask = 00000001b
+//     int i = 0
+//     while i < 8:
+//         if (v % 2) == 1:
+//             r = r | mask
+//         v = v / 2
+//         mask = mask << 1
+//         i = i + 1
+//     bytes = bytes ++ [r]
+//     while v > 0:
+//         r = 0b
+//         mask = 00000001b
+//         int j = 0
+//         while j < 8:
+//             if (v % 2) == 1:
+//                 r = r | mask
+//             v = v / 2
+//             mask = mask << 1
+//             j = j + 1
+//         bytes = bytes ++ [r]
+//     return bytes
 
 // Convert a signed integer into a single byte
 public function toSignedByte(i8 v) -> byte:
@@ -164,12 +184,14 @@ public function parse(string input) -> int|null:
         negative = false
     // now, parse remaining digits
     int r = 0
-    for i in start .. |input|:
+    int i = start
+    while i < |input|:
         char c = input[i]
         r = r * 10
-        if !Char.isDigit(c):
+        if !ASCII.isDigit(c):
             return null
         r = r + ((int) c - '0')
+        i = i + 1
     // done
     if negative:
         return -r

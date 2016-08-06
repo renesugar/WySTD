@@ -1,0 +1,14 @@
+<project name="BuildConfig" xmlns:maven="urn:maven-ant">
+  <!-- Get the root directory of the project by looking at the directory enclosing this file. -->
+  <dirname property="rootdir" file="${ant.file.BuildConfig}"/>
+  <!-- Set the current Whiley version -->
+  <property name="version" value="0.4.0"/>
+  <!-- Load the Maven Ant tasks so that we can work with Maven repositories. -->
+
+  <!-- Paths to common JARs -->
+  <property name="WYCC_JAR" value="lib/wybs-v0.4.0-SNAPSHOT.jar"/>
+  <property name="WYC_JAR" value="lib/wyc-v0.4.0-SNAPSHOT.jar"/>  
+  <property name="WYCS_JAR" value="lib/wycs-v0.4.0.jar"/>
+  <property name="WYRL_JAR" value="lib/wyrl-v0.4.4.jar"/>
+
+</project>

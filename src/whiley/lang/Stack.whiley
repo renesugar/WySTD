@@ -25,5 +25,42 @@
 
 package whiley.lang
 
-// Return the current time in seconds
-public native method current() -> real
+public type Stack is {
+    int[] items,
+    int length
+}
+
+public function create(int max) -> Stack:
+    return {
+        items: [0; max],
+        length: 0
+    }
+
+public function size(Stack stack) -> int:
+    return stack.length
+
+/**
+ * Return the top element of the "stack".
+ */
+public function top(Stack stack) -> int:
+    //
+    return stack.items[stack.length-1]
+
+
+/**
+ * Push an element onto the "stack".
+ */
+public function push(Stack stack, int element) -> (Stack r):
+    //
+    stack.items[stack.length] = element
+    stack.length = stack.length + 1
+    return stack
+
+/**
+ * Pop an element off the "stack".
+ */
+public function pop(Stack stack) -> (Stack r):
+    //
+    stack.length = stack.length - 1
+    //
+    return stack
