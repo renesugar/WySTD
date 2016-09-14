@@ -1,0 +1,8 @@
+.classpath
+.project
+*.class
+*.wyil
+*.wyasm
+*.wycs
+*~
+*.jar

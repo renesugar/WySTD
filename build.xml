@@ -5,24 +5,12 @@
   <!-- ================================================================== -->
   <import file="config.xml"/>
 
-  <path id="wyrt.classpath">
-    <pathelement path="${WYCC_JAR}/src"/>
-    <pathelement path="${WYC_JAR}/src"/>
-    <pathelement path="${WYTP_JAR}"/>
-    <pathelement path="{$WYRL_JAR}"/>
-  </path>
-
   <!-- ================================================================== -->
   <!-- Compile -->
   <!-- ================================================================== -->
 
   <target name="compile-wyrt">
-    <taskdef name="wyc" classname="wyc.util.WycAntTask">
-      <classpath>
-	<path refid="wyrt.classpath"/>
-      </classpath>
-    </taskdef>
-    <wyc verbose="false" verificationConditions="false" bootpath="${WYTP_JAR}" whileydir="src" wycsdir="src" includes="whiley/**/*.whiley"/>
+    <wyc whileydir="src" wyildir="src"/>
   </target>
 
   <!-- ================================================================== -->
