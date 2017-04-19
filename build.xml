@@ -10,7 +10,7 @@
   <!-- ================================================================== -->
 
   <target name="compile-wyrt">
-    <wyc whileydir="src" wyildir="src"/>
+    <wyc whileydir="src" wyildir="src" verify="${wyc.verification}"/>
   </target>
 
   <!-- ================================================================== -->

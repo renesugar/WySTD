@@ -1,6 +1,8 @@
 <project name="BuildConfig" xmlns:maven="urn:maven-ant">
   <!-- Set the current version -->
   <property name="version" value="0.1.1"/>
+  <!-- Configure various properties -->
+  <property name="wyc.verification" value="false"/>
   <!-- Define destination for jar -->
   <property name="LIB_DIR" value="lib/"/>
   <!-- Load the Maven Ant tasks so that we can work with Maven repositories. -->
