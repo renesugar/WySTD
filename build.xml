@@ -10,7 +10,7 @@
   <!-- ================================================================== -->
 
   <target name="compile-wyrt">
-    <wyc whileydir="src" wyildir="src" verify="${wyc.verification}"/>
+    <wyc whileydir="src" verbose="true" wyildir="src" wyaldir="src" verify="${wyc.verification}" vcg="${wyc.vcg}"/>
   </target>
 
   <!-- ================================================================== -->
@@ -20,6 +20,7 @@
   <target name="build" depends="compile-wyrt">
     <jar destfile="${LIB_DIR}/wyrt-v${version}.jar">
       <fileset dir="src" includes="*/**/*.wyil"/>
+      <fileset dir="src" includes="*/**/*.wyal"/>
     </jar>
     <echo message="============================================="/>
     <echo message="BUILT: lib/${ant.project.name}-v${version}.jar"/>
