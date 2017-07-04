@@ -5,7 +5,7 @@
   <property environment="env"/>
   <property name="WHILEYHOME" value="${env.WHILEYHOME}"/>
   <property name="wyc.verification" value="false"/>
-  <property name="wyc.vcg" value="true"/>  
+  <property name="wyc.vcg" value="false"/>  
   <!-- Define destination for jar -->
   <property name="LIB_DIR" value="lib/"/>
   <!-- Load the Maven Ant tasks so that we can work with Maven repositories. -->
@@ -17,12 +17,10 @@
     <!-- Define the WyC build task -->
     <taskdef name="wyc" classname="wyc.util.AntTask">
       <classpath>
-	<path refid="wyc.jar"/>
-	<!--
+	<!--<path refid="wyc.jar"/>-->
 	<pathelement location="${WHILEYHOME}/lib/wyc-0.4.12.jar"/>
 	<pathelement location="${WHILEYHOME}/lib/wycc-0.5.6.jar"/>
 	<pathelement location="${WHILEYHOME}/lib/wytp-0.6.1.jar"/>
-	-->
       </classpath>
     </taskdef>
 </project>

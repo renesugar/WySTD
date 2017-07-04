@@ -28,6 +28,18 @@ package whiley.lang
 // Define the 8bit ASCII character
 public type char is (int x) where 0 <= x && x <= 255
 
+// Define the ASCII letter
+public type letter is (int x) where ('a' <= x && x <= 'z') || ('A' <= x && x <= 'Z')
+
+// Define the ASCII uppercase letter
+public type uppercase is (int x) where ('A' <= x && x <= 'Z')
+
+// Define the ASCII lowercase letter
+public type lowercase is (int x) where ('a' <= x && x <= 'z')
+
+// Define the ASCII digit
+public type digit is (int x) where ('0' <= x && x <= '9')
+
 // Define string as sequence of ASCII characters
 public type string is char[]
 
