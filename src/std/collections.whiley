@@ -23,73 +23,47 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-package whiley.lang
+package std
+
+// ===========================================================================
+// Stack
+// ===========================================================================
+public type Stack is {
+    int[] items,
+    int length
+}
+
+public function Stack(int max) -> Stack:
+    return {
+        items: [0; max],
+        length: 0
+    }
+
+public function size(Stack stack) -> int:
+    return stack.length
 
 /**
- * Return absolute value of integer variable.
+ * Return the top element of the "stack".
  */
-public function abs(int x) -> (int r)
-// if input positive, then result equals input
-ensures x >= 0 ==> r == x
-// if input negative, then result equals negated input
-ensures x < 0 ==> r == -x:
+public function top(Stack stack) -> int:
     //
-    if x < 0:
-        return -x
-    else:
-        return x
+    return stack.items[stack.length-1]
+
 
 /**
- * Return maximum of two integer variables
+ * Push an element onto the "stack".
  */
-public function max(int a, int b) -> (int r)
-// Return cannot be smaller than either parameter
-ensures r >= a && r >= b
-// Return value must equal one parameter
-ensures r == a || r == b:
+public function push(Stack stack, int element) -> (Stack r):
     //
-    if a < b:
-        return b
-    else:
-        return a
+    stack.items[stack.length] = element
+    stack.length = stack.length + 1
+    return stack
 
 /**
- * Return minimum of two integer variables
+ * Pop an element off the "stack".
  */
-public function min(int a, int b) -> (int r)
-// Return cannot be greater than either parameter
-ensures r <= a && r <= b
-// Return value must equal one parameter
-ensures r == a || r == b:
+public function pop(Stack stack) -> (Stack r):
     //
-    if a > b:
-        return b
-    else:
-        return a
-
-/**
- * Return integer value raised to a given power.
- */
-public function pow(int base, int exponent) -> int
-// Exponent cannot be negative
-requires exponent > 0:
+    stack.length = stack.length - 1
     //
-    int r = 1
-    int i = 0
-    while i < exponent:
-        r = r * base
-        i = i + 1
-    return r
-
-// Based on an excellent article entitled "Integer Square Roots"
-// by Jack W. Crenshaw, published in the eetimes, 1998.
-public function isqrt(int x) -> (int r)
-requires x >= 0
-ensures r >= 0:
-    //
-    int square = 1
-    int delta = 3
-    while square <= x:
-        square = square + delta
-        delta = delta + 2
-    return (delta/2) - 1
+    return stack

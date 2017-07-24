@@ -23,7 +23,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-package whiley.lang
+package std
 
 // Define the 8bit ASCII character
 public type char is (int x) where 0 <= x && x <= 255
@@ -71,7 +71,7 @@ public function fromBytes(byte[] data) -> string:
     string r = [0; |data|]
     int i = 0
     while i < |data| where i >= 0:
-        r[i] = Byte.toInt(data[i])
+        r[i] = bits.toInt(data[i])
         i = i + 1
     return r
 

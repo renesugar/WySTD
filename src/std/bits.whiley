@@ -23,10 +23,11 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-package whiley.lang
+package std
 
-import string from whiley.lang.ASCII
-import uint from whiley.lang.Int
+import string from std.ascii
+
+type uint is (int x) where x >= 0
 
 // convert a byte into a string
 public function toString(byte b) -> string:

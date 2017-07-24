@@ -23,44 +23,18 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-package whiley.lang
+package std
 
-public type Stack is {
-    int[] items,
-    int length
+import string from std.ascii
+
+public type PrintWriter is {
+    method print(any),
+    method println(any),
+    method print_s(string),
+    method println_s(string)
 }
 
-public function create(int max) -> Stack:
-    return {
-        items: [0; max],
-        length: 0
-    }
-
-public function size(Stack stack) -> int:
-    return stack.length
-
-/**
- * Return the top element of the "stack".
- */
-public function top(Stack stack) -> int:
-    //
-    return stack.items[stack.length-1]
-
-
-/**
- * Push an element onto the "stack".
- */
-public function push(Stack stack, int element) -> (Stack r):
-    //
-    stack.items[stack.length] = element
-    stack.length = stack.length + 1
-    return stack
-
-/**
- * Pop an element off the "stack".
- */
-public function pop(Stack stack) -> (Stack r):
-    //
-    stack.length = stack.length - 1
-    //
-    return stack
+public type Console is {
+    PrintWriter out,
+    string[] args
+}

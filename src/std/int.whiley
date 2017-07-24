@@ -23,10 +23,10 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-package whiley.lang
+package std
 
-import string from whiley.lang.ASCII
-import char from whiley.lang.ASCII
+import string from std.ascii
+import char from std.ascii
 
 /**
  * Represents all signed integers representable in 8bits
@@ -96,8 +96,8 @@ constant digits is [
     'a','b','c','d','e','f','g','h'
 ]
 
-public function toString(int item) -> string:
-    return Any.toString(item)
+// public function toString(int item) -> string:
+//     return Any.toString(item)
 
 // Convert an integer into a hex string
 public function toHexString(int item) -> string:
@@ -168,7 +168,7 @@ public function toSignedByte(i8 v) -> byte:
     //
     if v < 0:
         v = v + 256
-    return Int.toUnsignedByte(v)
+    return toUnsignedByte(v)
 
 // parse a string representation of an integer value
 public function parse(string input) -> int|null:
@@ -188,7 +188,7 @@ public function parse(string input) -> int|null:
     while i < |input|:
         char c = input[i]
         r = r * 10
-        if !ASCII.isDigit(c):
+        if !ascii.isDigit(c):
             return null
         r = r + ((int) c - '0')
         i = i + 1
