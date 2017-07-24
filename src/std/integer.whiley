@@ -25,8 +25,7 @@
 
 package std
 
-import string from std.ascii
-import char from std.ascii
+// THIS MODULE IS TO BE DEPRECATED
 
 /**
  * Represents all signed integers representable in 8bits
@@ -91,34 +90,8 @@ public type uint is (int x) where x >= 0
 
 public type nat is (int x) where x >= 0
 
-constant digits is [
-    '0','1','2','3','4','5','6','7','8','9',
-    'a','b','c','d','e','f','g','h'
-]
-
 // public function toString(int item) -> string:
 //     return Any.toString(item)
-
-// Convert an integer into a hex string
-public function toHexString(int item) -> string:
-    string r = ""
-    int count = 0
-    int i = item
-    while i > 0:
-        int v = i / 16
-        int w = i % 16
-        count = count + 1
-        i = v
-    //
-    i = count
-    while item > 0:
-        i = i - 1    
-        int v = item / 16
-        int w = item % 16
-        r[i] = digits[w]
-        item = v
-    //
-    return r
 
 // convert an integer into an unsigned byte
 public function toUnsignedByte(u8 v) -> byte:
@@ -134,35 +107,6 @@ public function toUnsignedByte(u8 v) -> byte:
         i = i + 1
     return r
 
-// convert an arbitrary sized unsigned integer into a list of bytes in
-// little endian form.
-// public function toUnsignedBytes(uint v) -> [byte]:
-//     //
-//     [byte] bytes = []
-//     // do-while is needed here
-//     byte r = 0b
-//     byte mask = 00000001b
-//     int i = 0
-//     while i < 8:
-//         if (v % 2) == 1:
-//             r = r | mask
-//         v = v / 2
-//         mask = mask << 1
-//         i = i + 1
-//     bytes = bytes ++ [r]
-//     while v > 0:
-//         r = 0b
-//         mask = 00000001b
-//         int j = 0
-//         while j < 8:
-//             if (v % 2) == 1:
-//                 r = r | mask
-//             v = v / 2
-//             mask = mask << 1
-//             j = j + 1
-//         bytes = bytes ++ [r]
-//     return bytes
-
 // Convert a signed integer into a single byte
 public function toSignedByte(i8 v) -> byte:
     //
@@ -170,31 +114,74 @@ public function toSignedByte(i8 v) -> byte:
         v = v + 256
     return toUnsignedByte(v)
 
-// parse a string representation of an integer value
-public function parse(string input) -> int|null:
-    //
-    // first, check for negative number
-    int start = 0
-    bool negative
 
-    if input[0] == '-':
-        negative = true
-        start = start + 1
-    else:
-        negative = false
-    // now, parse remaining digits
-    int r = 0
-    int i = start
-    while i < |input|:
-        char c = input[i]
-        r = r * 10
-        if !ascii.isDigit(c):
-            return null
-        r = r + ((int) c - '0')
+// convert a byte into a string
+public function toString(byte b) -> ascii.string:
+    ascii.string r = [0; 'b']
+    int i = 0
+    while i < 8:
+        if (b & 00000001b) == 00000001b:
+            r[7-i] = '1'
+        else:
+            r[7-i] = '0'
+        b = b >> 1
         i = i + 1
-    // done
-    if negative:
-        return -r
+    return r
+
+// Convert a byte into an unsigned int.  This assumes a little endian
+// encoding.
+public function toUnsignedInt(byte b) -> uint:
+    int r = 0
+    int base = 1
+    while b != 0b:
+        if (b & 00000001b) == 00000001b:
+            r = r + base
+        b = b >> 1
+        base = base * 2
+    return r
+
+// Convert a byte array into an unsigned int assuming a little endian
+// form for both individual bytes, and the array as a whole
+public function toUnsignedInt(byte[] bytes) -> uint:
+    int val = 0
+    int base = 1
+    int i = 0
+    while i < |bytes|:
+        int v = toUnsignedInt(bytes[i]) * base
+        val = val + v
+        base = base * 256
+        i = i + 1
+    return val
+
+// Convert a byte into an unsigned int.  This assumes a little endian
+// encoding.
+public function toInt(byte b) -> int:
+    int r = 0
+    int base = 1
+    while b != 0b:
+        if (b & 00000001b) == 00000001b:
+            r = r + base
+        b = b >> 1
+        base = base * 2
+    // finally, add the sign
+    if r >= 128:
+        return -(256-r)
     else:
         return r
 
+// Convert a byte array into a signed int assuming a little endian
+// form for both individual bytes, and the array as a whole
+public function toInt(byte[] bytes) -> int:
+    int val = 0
+    int base = 1
+    int i = 0
+    while i < |bytes|:
+        int v = toUnsignedInt(bytes[i]) * base
+        val = val + v
+        base = base * 256
+        i = i + 1
+    // finally, add the sign
+    if val >= (base/2):
+        return -(base-val)
+    else:
+        return val

@@ -71,7 +71,7 @@ public function fromBytes(byte[] data) -> string:
     string r = [0; |data|]
     int i = 0
     while i < |data| where i >= 0:
-        r[i] = bits.toInt(data[i])
+        r[i] = integer.toInt(data[i])
         i = i + 1
     return r
 
@@ -102,4 +102,56 @@ public function isWhiteSpace(char c) -> bool:
     return c == ' ' || c == '\t' || c == '\n' || c == '\r'
 
 
+constant digits is [
+    '0','1','2','3','4','5','6','7','8','9',
+    'a','b','c','d','e','f','g','h'
+]
 
+// Convert an integer into a hex string
+public function toHexString(int item) -> string:
+    string r = ""
+    int count = 0
+    int i = item
+    while i > 0:
+        int v = i / 16
+        int w = i % 16
+        count = count + 1
+        i = v
+    //
+    i = count
+    while item > 0:
+        i = i - 1    
+        int v = item / 16
+        int w = item % 16
+        r[i] = digits[w]
+        item = v
+    //
+    return r
+
+// parse a string representation of an integer value
+public function parseInt(ascii.string input) -> int|null:
+    //
+    // first, check for negative number
+    int start = 0
+    bool negative
+
+    if input[0] == '-':
+        negative = true
+        start = start + 1
+    else:
+        negative = false
+    // now, parse remaining digits
+    int r = 0
+    int i = start
+    while i < |input|:
+        char c = input[i]
+        r = r * 10
+        if !ascii.isDigit(c):
+            return null
+        r = r + ((int) c - '0')
+        i = i + 1
+    // done
+    if negative:
+        return -r
+    else:
+        return r
