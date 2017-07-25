@@ -100,8 +100,7 @@ public function isDigit(char c) -> bool:
 
 public function isWhiteSpace(char c) -> bool:
     return c == ' ' || c == '\t' || c == '\n' || c == '\r'
-
-
+/*
 constant digits is [
     '0','1','2','3','4','5','6','7','8','9',
     'a','b','c','d','e','f','g','h'
@@ -155,3 +154,4 @@ public function parseInt(ascii.string input) -> int|null:
         return -r
     else:
         return r
+*/

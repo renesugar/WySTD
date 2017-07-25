@@ -62,4 +62,4 @@ public type File is  {
 }
 
 // Create a file object for reading / writing
-public native method File(ascii.string fileName) -> File
+public native method open(ascii.string fileName) -> File

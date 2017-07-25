@@ -19,12 +19,21 @@
 
   <target name="build" depends="compile-wyrt">
     <jar destfile="${LIB_DIR}/wyrt-v${version}.jar">
-      <fileset dir="src" includes="*/**/*.wyil"/>
+      <fileset dir="src" includes="*/**/*.wyil"/>      
       <fileset dir="src" includes="*/**/*.wyal"/>
+      <fileset dir="src" includes="*/**/*.class"/>      
     </jar>
     <echo message="============================================="/>
     <echo message="BUILT: lib/${ant.project.name}-v${version}.jar"/>
     <echo message="============================================="/>
+  </target>
+
+  <!-- ================================================================== -->
+  <!-- Deploy Plugin -->
+  <!-- ================================================================== -->
+
+  <target name="plugin" depends="build">
+    <copy file="${LIB_DIR}/wyrt-v${version}.jar" todir="${WHILEYHOME}/lib"/>
   </target>
 
   <!-- ================================================================== -->
