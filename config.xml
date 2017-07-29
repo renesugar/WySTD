@@ -4,6 +4,14 @@
   <!-- Configure various properties -->
   <property environment="env"/>
   <property name="WHILEYHOME" value="${env.WHILEYHOME}"/>
+  <property name="SRC_DIR" value="src"/>
+  <property name="BIN_DIR" value="bin"/>
+  <property name="WHILEY_DIR" value="${SRC_DIR}/whiley"/>
+  <property name="JAVA_DIR" value="${SRC_DIR}/java"/>
+  <property name="WYIL_DIR" value="${BIN_DIR}/wyil"/>
+  <property name="WYAL_DIR" value="${BIN_DIR}/wyal"/>    
+  <property name="CLASS_DIR" value="${BIN_DIR}/classes"/>
+  <property name="JS_DIR" value="${BIN_DIR}/js"/>
   <!-- Enable/disable verification -->
   <property name="wyc.verification" value="false"/>
   <!-- Enable/disable verification condition generation -->  
@@ -14,17 +22,33 @@
   <typedef uri="urn:maven-ant" classpath="lib/maven-ant-tasks-2.1.3.jar" resource="org/apache/maven/artifact/ant/antlib.xml"/>
   <!-- Set the classpath for Junit and its dependencies -->
   <maven:dependencies pathId="wyc.jar">
-    <dependency groupId="org.whiley" artifactId="wyc" version="0.4.12"/>
+    <dependency groupId="org.whiley" artifactId="wyc" version="0.4.14"/>
   </maven:dependencies>
-    <!-- Define the WyC build task -->
-    <taskdef name="wyc" classname="wyc.util.AntTask">
-      <classpath>
-	<path refid="wyc.jar"/>
-	<!--
-	<pathelement location="${WHILEYHOME}/lib/wyc-0.4.12.jar"/>
-	<pathelement location="${WHILEYHOME}/lib/wycc-0.5.6.jar"/>
-	<pathelement location="${WHILEYHOME}/lib/wytp-0.6.1.jar"/>
-	-->
-      </classpath>
-    </taskdef>
+  <maven:dependencies pathId="wyjc.jar">
+    <dependency groupId="org.whiley" artifactId="wyjc" version="0.4.3"/>
+  </maven:dependencies>
+  <!-- Define the WyC build task -->
+  <taskdef name="wyc" classname="wyc.util.AntTask">
+    <classpath>     
+      <path refid="wyc.jar"/>
+      <!--      
+	  <pathelement location="${WHILEYHOME}/lib/wyc-0.4.12.jar"/>
+	  <pathelement location="${WHILEYHOME}/lib/wycc-0.5.6.jar"/>
+	  <pathelement location="${WHILEYHOME}/lib/wytp-0.6.1.jar"/>
+      -->
+    </classpath>
+  </taskdef>
+  <!-- Define the WyJC build task -->    
+  <taskdef name="wyjc" classname="wyjc.util.AntTask">
+    <classpath>
+      <path refid="wyjc.jar"/>
+      <!--
+	  <pathelement location="${WHILEYHOME}/lib/wyc-0.4.13.jar"/>
+	  <pathelement location="${WHILEYHOME}/lib/wycc-0.5.6.jar"/>
+	  <pathelement location="${WHILEYHOME}/lib/wytp-0.6.3.jar"/>
+	  <pathelement location="${WHILEYHOME}/lib/wyjc-0.4.3.jar"/>
+	  <pathelement location="${WHILEYHOME}/lib/jasm-1.0.1.jar"/>
+      -->
+    </classpath>
+  </taskdef>    
 </project>
