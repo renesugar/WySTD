@@ -18,13 +18,21 @@
   </target>
 
   <!-- ================================================================== -->
-  <!-- Compile -->
+  <!-- Build WyIL -->
   <!-- ================================================================== -->
 
-  <target name="compile-jvm" depends="setup">
-    
-    <wyjc whileydir="${WHILEY_DIR}" verbose="true" wyildir="${WYIL_DIR}" wyaldir="${WYAL_DIR}"
-	 classdir="${CLASS_DIR}" verify="${wyc.verification}" vcg="${wyc.vcg}"/>
+  <target name="compile-wyil" depends="setup">
+    <wyc whileydir="${WHILEY_DIR}" verbose="true"
+	 wyildir="${WYIL_DIR}" wyaldir="${WYAL_DIR}" verify="${wyc.verification}" vcg="${wyc.vcg}"/>
+  </target>
+
+  <!-- ================================================================== -->
+  <!-- Build JVM -->
+  <!-- ================================================================== -->
+
+  <target name="compile-jvm" depends="compile-wyil">
+    <wyjc whileydir="${WHILEY_DIR}" verbose="true"
+	  wyildir="${WYIL_DIR}" classdir="${CLASS_DIR}"/>
     <javac includeantruntime="false" srcdir="${JAVA_DIR}" 
 	   destdir="${CLASS_DIR}" includes="**/*.java">
       <classpath>
@@ -34,12 +42,21 @@
   </target>
 
   <!-- ================================================================== -->
+  <!-- Build JS -->
+  <!-- ================================================================== -->
+
+  <target name="compile-js" depends="compile-wyil">
+    <wyjs whileydir="${WHILEY_DIR}" verbose="true"
+	  wyildir="${WYIL_DIR}" jsdir="${JS_DIR}"/>
+  </target>
+
+  <!-- ================================================================== -->
   <!-- Build -->
   <!-- ================================================================== -->
 
-  <target name="build" depends="compile-jvm">
+  <target name="build" depends="compile-jvm,compile-js">
     <jar destfile="${LIB_DIR}/wystd-v${version}.jar">
-      <fileset dir="${WYIL_DIR}" includes="*/**/*.wyil"/>      
+      <fileset dir="${WYIL_DIR}" includes="*/**/*.wyil"/>
       <fileset dir="${WYAL_DIR}" includes="*/**/*.wyal"/>
       <fileset dir="${CLASS_DIR}" includes="*/**/*.class"/>
     </jar>
