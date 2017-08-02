@@ -1,4 +1,4 @@
-<project name="wyrt" default="build">
+<project name="wystd" default="build">
 
   <!-- ================================================================== -->
   <!-- Configuration -->
@@ -6,25 +6,71 @@
   <import file="config.xml"/>
 
   <!-- ================================================================== -->
-  <!-- Compile -->
+  <!-- Setup -->
   <!-- ================================================================== -->
 
-  <target name="compile-wyrt">
-    <wyc whileydir="src" verbose="true" wyildir="src" wyaldir="src" verify="${wyc.verification}" vcg="${wyc.vcg}"/>
+  <target name="setup">
+    <mkdir dir="${BIN_DIR}"/>
+    <mkdir dir="${WYIL_DIR}"/>
+    <mkdir dir="${WYAL_DIR}"/>
+    <mkdir dir="${CLASS_DIR}"/>
+    <mkdir dir="${JS_DIR}"/>
+  </target>
+
+  <!-- ================================================================== -->
+  <!-- Build WyIL -->
+  <!-- ================================================================== -->
+
+  <target name="compile-wyil" depends="setup">
+    <wyc whileydir="${WHILEY_DIR}" verbose="true"
+	 wyildir="${WYIL_DIR}" wyaldir="${WYAL_DIR}" verify="${wyc.verification}" vcg="${wyc.vcg}"/>
+  </target>
+
+  <!-- ================================================================== -->
+  <!-- Build JVM -->
+  <!-- ================================================================== -->
+
+  <target name="compile-jvm" depends="compile-wyil">
+    <wyjc whileydir="${WHILEY_DIR}" verbose="true"
+	  wyildir="${WYIL_DIR}" classdir="${CLASS_DIR}"/>
+    <javac includeantruntime="false" srcdir="${JAVA_DIR}" 
+	   destdir="${CLASS_DIR}" includes="**/*.java">
+      <classpath>
+	<path refid="wyjc.jar"/>
+      </classpath>
+    </javac>
+  </target>
+
+  <!-- ================================================================== -->
+  <!-- Build JS -->
+  <!-- ================================================================== -->
+
+  <target name="compile-js" depends="compile-wyil">
+    <wyjs whileydir="${WHILEY_DIR}" verbose="true"
+	  wyildir="${WYIL_DIR}" jsdir="${JS_DIR}"/>
   </target>
 
   <!-- ================================================================== -->
   <!-- Build -->
   <!-- ================================================================== -->
 
-  <target name="build" depends="compile-wyrt">
-    <jar destfile="${LIB_DIR}/wyrt-v${version}.jar">
-      <fileset dir="src" includes="*/**/*.wyil"/>
-      <fileset dir="src" includes="*/**/*.wyal"/>
+  <target name="build" depends="compile-jvm,compile-js">
+    <jar destfile="${LIB_DIR}/wystd-v${version}.jar">
+      <fileset dir="${WYIL_DIR}" includes="*/**/*.wyil"/>
+      <fileset dir="${WYAL_DIR}" includes="*/**/*.wyal"/>
+      <fileset dir="${CLASS_DIR}" includes="*/**/*.class"/>
     </jar>
     <echo message="============================================="/>
     <echo message="BUILT: lib/${ant.project.name}-v${version}.jar"/>
     <echo message="============================================="/>
+  </target>
+
+  <!-- ================================================================== -->
+  <!-- Deploy Plugin -->
+  <!-- ================================================================== -->
+
+  <target name="plugin" depends="build">
+    <copy file="${LIB_DIR}/wystd-v${version}.jar" todir="${WHILEYHOME}/lib"/>
   </target>
 
   <!-- ================================================================== -->
@@ -33,7 +79,8 @@
 
   <target name="clean">
     <delete includeEmptyDirs="true" failonerror="false">
-      <fileset dir="." includes="**/*.wyil,**/*.wyasm"/>
+      <fileset dir="bin" includes="**/*"/>
+      <fileset dir="bin"/>
     </delete>
     <echo message="============================================="/>
     <echo message="CLEANED: ${ant.project.name}"/>

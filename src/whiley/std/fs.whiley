@@ -22,17 +22,17 @@
 // ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-package whiley.io
+package std
 
-import whiley.io.Reader
-import uint from whiley.lang.Int
-import string from whiley.lang.ASCII
+import string from std.ascii
+
+type uint is (int x) where x >= 0
 
 // ====================================================
-// File Reader
+// File 
 // ====================================================
-public type Reader is  {
 
+public type File is  {
     // Read all bytes of this file in one go.
     method readAll() -> byte[],
 
@@ -40,6 +40,13 @@ public type Reader is  {
     // operation may block if the number requested is greater than that
     // available.
     method read(uint) -> byte[],
+
+    // Writes a given list of bytes to the output stream.
+    method write(byte[]) -> uint,
+
+    // Flush this output stream thereby forcing those items written
+    // thus far to the output device.
+    method flush(),
 
     // Check whether the end-of-stream has been reached and, hence,
     // that there are no further bytes which can be read.
@@ -54,57 +61,5 @@ public type Reader is  {
     method available() -> uint
 }
 
-public method Reader(string fileName) -> Reader:
-    NativeFile reader = NativeFileReader(fileName)
-    return {
-        readAll: &( -> read(reader)),
-        read: &(uint n -> read(reader,n)),
-        hasMore: &( -> hasMore(reader)),
-        close: &( -> close(reader)),
-        available: &( -> available(reader))
-    }
-
-// ====================================================
-// File Writer
-// ====================================================
-type Writer is whiley.io.Writer.Writer
-
-public method Writer(string fileName) -> Writer:
-    NativeFile reader = NativeFileWriter(fileName)
-    return {
-        write: &(byte[] data -> write(reader,data)),
-        close: &( -> close(reader)),
-        flush: &( -> flush(reader))
-    }
-
-// ====================================================
-// Native Implementation
-// ====================================================
-
-// Represents an unknown underlying data structure
-type NativeFile is &any
-
-private native method NativeFileReader(string filename) -> NativeFile
-
-private native method NativeFileWriter(string filename) -> NativeFile
-
-// flush native file
-private native method flush(NativeFile f)
-
-// close native file
-private native method close(NativeFile f)
-
-// determine how many bytes can be read without blocking
-private native method available(NativeFile f) -> uint
-
-// determine whether or not we've reached the end-of-file
-private native method hasMore(NativeFile f) -> bool
-
-// read at most max bytes from native file
-private native method read(NativeFile f, int max) -> byte[]
-
-// read as many bytes as possible from native file
-private native method read(NativeFile f) -> byte[]
-
-// write entire contents of native file
-private native method write(NativeFile f, byte[] data) -> uint
+// Create a file object for reading / writing
+public native method open(ascii.string fileName) -> File

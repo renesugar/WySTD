@@ -23,14 +23,17 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-package whiley.lang
+package std
 
+// ===========================================================================
+// Stack
+// ===========================================================================
 public type Stack is {
     int[] items,
     int length
 }
 
-public function create(int max) -> Stack:
+public function Stack(int max) -> Stack:
     return {
         items: [0; max],
         length: 0

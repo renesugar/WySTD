@@ -23,13 +23,60 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-package whiley.io
+package std
 
-import uint from whiley.lang.Int
-import string from whiley.lang.ASCII
+// TO BE DEPRECATED
+type uint is (int x) where x >= 0
 
 // =================================================================
-// Generic Writer
+// Print functions
+// =================================================================
+
+// Print an integer to stdout
+public native method print(int value)
+
+// Print an ASCII string to stdout
+public native method print(ascii.string value)
+
+// Print an integer to stdout (with newline terminator)
+public native method println(int value)
+
+// Print an ASCII string to stdout (with newline terminator)
+public native method println(ascii.string value)
+
+// =================================================================
+// Stream Reader
+// =================================================================
+
+// A generic reader represents an input stream of items (e.g. bytes or
+// characters), such as from a file, network socket, or a memory buffer.
+
+public type Reader is {
+
+    // Reads at most a given number of bytes from the stream.  This
+    // operation may block if the number requested is greater than that
+    // available.
+    method read(uint) -> byte[],
+
+    // Check whether the end-of-stream has been reached and, hence,
+    // that there are no further bytes which can be read.
+    method hasMore() -> bool,
+
+    // Closes this input stream thereby releasin any resources
+    // associated with it.
+    method close(),
+
+    // Return the number of bytes which can be safely read without
+    // blocking.
+    method available() -> uint,
+
+    // Space for additional operations defined by refinements of
+    // Reader
+    ...
+}
+
+// =================================================================
+// Stream Writer
 // =================================================================
 
 // A generic writer represents an output stream of data items
@@ -52,8 +99,3 @@ public type Writer is {
     // InputStream
     ...
 }
-
-
-
-
-
