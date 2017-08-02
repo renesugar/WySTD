@@ -126,6 +126,7 @@ public function toHexString(int item) -> string:
         item = v
     //
     return r
+*/
 
 // parse a string representation of an integer value
 public function parseInt(ascii.string input) -> int|null:
@@ -154,4 +155,3 @@ public function parseInt(ascii.string input) -> int|null:
         return -r
     else:
         return r
-*/
