@@ -61,5 +61,10 @@ public type File is  {
     method available() -> uint
 }
 
+public constant READONLY is 0
+public constant READWRITE is 1
+
+public type rwMode is (int x) where (x == READONLY) || (x == READWRITE)
+
 // Create a file object for reading / writing
-public native method open(ascii.string fileName) -> File
+public native method open(ascii.string fileName, rwMode mode) -> File

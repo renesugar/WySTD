@@ -42,12 +42,13 @@ import wyjc.runtime.WyArray;
 import wyjc.runtime.WyRecord;
 
 public class filesystem$native {
-	public static WyRecord open(WyArray _filename) {
+    public static WyRecord open(WyArray _filename, BigInteger mode) {
 		String filename = Util.il2str(_filename);
+		String rwMode = mode == BigInteger.ZERO ? "r" : "rw";
 		RandomAccessFile file;
 		try {
 			// FIXME: should extend filesystem.open to accept MODE
-			file = new RandomAccessFile(filename, "rw");
+			file = new RandomAccessFile(filename, rwMode);
 			WyRecord rec = new WyRecord();
 			rec.put("readAll", readAll(file));
 			rec.put("read", read(file));
