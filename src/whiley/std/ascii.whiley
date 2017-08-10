@@ -100,6 +100,40 @@ public function isDigit(char c) -> bool:
 
 public function isWhiteSpace(char c) -> bool:
     return c == ' ' || c == '\t' || c == '\n' || c == '\r'
+
+public function toString(int item) -> string:
+    //
+    bool sign
+    // First, normalise item and record sign
+    if item < 0:
+       sign = false
+       item = -item
+    else:
+       sign = true
+    // Second, determine number of digits.  This is necessary to
+    // avoid unnecessary dynamic memory allocatione    
+    int tmp = item
+    int digits = 0
+    do:
+        tmp = tmp / 10
+        digits = digits + 1
+    while tmp != 0
+    // Finally write digits into resulting string
+    string r = ['0';digits]
+    do:
+        int remainder = item % 10
+        item = item / 10
+        char digit = ('0' + remainder)
+        digits = digits - 1
+        r[digits] = digit
+    while item != 0
+    //
+    if sign:
+        return r
+    else:
+        // This could be optimised!
+        return append("-",r)
+
 /*
 constant digits is [
     '0','1','2','3','4','5','6','7','8','9',
