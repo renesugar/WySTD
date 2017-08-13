@@ -25,8 +25,9 @@
 
 package std
 
-// Define the 8bit ASCII character
-public type char is (int x) where 0 <= x && x <= 255
+// The ASCII standard (INCITS 4-1986[R2012]) defines a 7bit character
+// encoding.
+public type char is (int x) where 0 <= x && x <= 127
 
 // Define the ASCII letter
 public type letter is (int x) where ('a' <= x && x <= 'z') || ('A' <= x && x <= 'Z')
@@ -42,6 +43,107 @@ public type digit is (int x) where ('0' <= x && x <= '9')
 
 // Define string as sequence of ASCII characters
 public type string is char[]
+
+// === CONTROL CHARACTERS ===
+
+// Null character
+public constant NUL is 0
+
+// Start of Header
+public constant SOH is 1
+
+// Start of Text
+public constant STX is 2
+
+// End of Text
+public constant ETX is 3
+
+// End of Transmission
+public constant EOT is 4
+
+// Enquiry
+public constant ENQ is 5
+
+// Acknowledgment
+public constant ACK is 6
+
+// Bell
+public constant BEL is 7
+
+// Backspace
+public constant BS is 8
+
+// Horizontal Tab
+public constant HT is 9
+
+// Line Feed
+public constant LF is 10
+
+// Vertical Tab
+public constant VT is 11
+
+// Form Feed
+public constant FF is 12
+
+// Carriage Return
+public constant CR is 13
+
+// Shift Out
+public constant SO is 14
+
+// Shift In
+public constant SI is 15
+
+// Data Link Escape
+public constant DLE is 16
+
+// Device Control 1
+public constant DC1 is 17
+
+// Device Control 2
+public constant DC2 is 18
+
+// Device Control 3
+public constant DC3 is 19
+
+// Device Control 4
+public constant DC4 is 20
+
+// Negative Acknowledgement
+public constant NAK is 21
+
+// Synchronous Idle
+public constant SYN is 22
+
+// End of Transmission Block
+public constant ETB is 23
+
+// Cancel
+public constant CAN is 24
+
+// End of Medium
+public constant EM is 25
+
+// Substitute
+public constant SUB is 26
+
+// Escape
+public constant ESC is 27
+
+// File Separator
+public constant FS is 28
+
+// Group Separator
+public constant GS is 29
+
+// Record Separator
+public constant RS is 30
+
+// Unit Separator
+public constant US is 31
+
+// Delete
+public constant DEL is 127
 
 // Convert an ASCII character into a byte.
 public function toByte(char v) -> byte:
