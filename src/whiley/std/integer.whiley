@@ -90,11 +90,8 @@ public type uint is (int x) where x >= 0
 
 public type nat is (int x) where x >= 0
 
-// public function toString(int item) -> string:
-//     return Any.toString(item)
-
 // convert an integer into an unsigned byte
-public function toUnsignedByte(u8 v) -> byte:
+public function to_unsigned_byte(u8 v) -> byte:
     //
     byte mask = 00000001b
     byte r = 0b
@@ -108,15 +105,15 @@ public function toUnsignedByte(u8 v) -> byte:
     return r
 
 // Convert a signed integer into a single byte
-public function toSignedByte(i8 v) -> byte:
+public function to_signed_byte(i8 v) -> byte:
     //
     if v < 0:
         v = v + 256
-    return toUnsignedByte(v)
+    return to_unsigned_byte(v)
 
 
 // convert a byte into a string
-public function toString(byte b) -> ascii.string:
+public function to_String(byte b) -> ascii.string:
     ascii.string r = [0; 'b']
     int i = 0
     while i < 8:
@@ -130,7 +127,7 @@ public function toString(byte b) -> ascii.string:
 
 // Convert a byte into an unsigned int.  This assumes a little endian
 // encoding.
-public function toUnsignedInt(byte b) -> uint:
+public function to_unsigned(byte b) -> uint:
     int r = 0
     int base = 1
     while b != 0b:
@@ -142,12 +139,12 @@ public function toUnsignedInt(byte b) -> uint:
 
 // Convert a byte array into an unsigned int assuming a little endian
 // form for both individual bytes, and the array as a whole
-public function toUnsignedInt(byte[] bytes) -> uint:
+public function to_unsigned(byte[] bytes) -> uint:
     int val = 0
     int base = 1
     int i = 0
     while i < |bytes|:
-        int v = toUnsignedInt(bytes[i]) * base
+        int v = to_unsigned(bytes[i]) * base
         val = val + v
         base = base * 256
         i = i + 1
@@ -155,7 +152,7 @@ public function toUnsignedInt(byte[] bytes) -> uint:
 
 // Convert a byte into an unsigned int.  This assumes a little endian
 // encoding.
-public function toInt(byte b) -> int:
+public function to_int(byte b) -> int:
     int r = 0
     int base = 1
     while b != 0b:
@@ -171,12 +168,12 @@ public function toInt(byte b) -> int:
 
 // Convert a byte array into a signed int assuming a little endian
 // form for both individual bytes, and the array as a whole
-public function toInt(byte[] bytes) -> int:
+public function to_int(byte[] bytes) -> int:
     int val = 0
     int base = 1
     int i = 0
     while i < |bytes|:
-        int v = toUnsignedInt(bytes[i]) * base
+        int v = to_unsigned(bytes[i]) * base
         val = val + v
         base = base * 256
         i = i + 1
@@ -185,3 +182,95 @@ public function toInt(byte[] bytes) -> int:
         return -(base-val)
     else:
         return val
+
+public function to_string(int item) -> ascii.string:
+    //
+    bool sign
+    // First, normalise item and record sign
+    if item < 0:
+       sign = false
+       item = -item
+    else:
+       sign = true
+    // Second, determine number of digits.  This is necessary to
+    // avoid unnecessary dynamic memory allocatione    
+    int tmp = item
+    int digits = 0
+    do:
+        tmp = tmp / 10
+        digits = digits + 1
+    while tmp != 0
+    // Finally write digits into resulting string
+    ascii.string r = ['0';digits]
+    do:
+        int remainder = item % 10
+        item = item / 10
+        ascii.char digit = ('0' + remainder)
+        digits = digits - 1
+        r[digits] = digit
+    while item != 0
+    //
+    if sign:
+        return r
+    else:
+        // This could be optimised!
+        return ascii.append("-",r)
+
+
+/*
+constant digits is [
+    '0','1','2','3','4','5','6','7','8','9',
+    'a','b','c','d','e','f','g','h'
+]
+
+// Convert an integer into a hex string
+public function to_hex_string(int item) -> string:
+    string r = ""
+    int count = 0
+    int i = item
+    while i > 0:
+        int v = i / 16
+        int w = i % 16
+        count = count + 1
+        i = v
+    //
+    i = count
+    while item > 0:
+        i = i - 1    
+        int v = item / 16
+        int w = item % 16
+        r[i] = digits[w]
+        item = v
+    //
+    return r
+*/
+
+
+// parse a string representation of an integer value
+public function parse(ascii.string input) -> int|null:
+    //
+    // first, check for negative number
+    int start = 0
+    bool negative
+
+    if input[0] == '-':
+        negative = true
+        start = start + 1
+    else:
+        negative = false
+    // now, parse remaining digits
+    int r = 0
+    int i = start
+    while i < |input|:
+        ascii.char c = input[i]
+        r = r * 10
+        if !ascii.is_digit(c):
+            return null
+        r = r + ((int) c - '0')
+        i = i + 1
+    // done
+    if negative:
+        return -r
+    else:
+        return r
+

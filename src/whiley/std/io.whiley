@@ -51,7 +51,7 @@ public native method println(ascii.string value)
 // A generic reader represents an input stream of items (e.g. bytes or
 // characters), such as from a file, network socket, or a memory buffer.
 
-public type Reader is {
+public type reader is {
 
     // Reads at most a given number of bytes from the stream.  This
     // operation may block if the number requested is greater than that
@@ -60,7 +60,7 @@ public type Reader is {
 
     // Check whether the end-of-stream has been reached and, hence,
     // that there are no further bytes which can be read.
-    method hasMore() -> bool,
+    method has_more() -> bool,
 
     // Closes this input stream thereby releasin any resources
     // associated with it.
@@ -82,7 +82,7 @@ public type Reader is {
 // A generic writer represents an output stream of data items
 // (e.g. bytes or characters), such as being written a file, socket or
 // console.
-public type Writer is {
+public type writer is {
 
     // Writes a given list of bytes to the output stream.
     method write(byte[]) -> uint,

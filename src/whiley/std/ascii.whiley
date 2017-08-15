@@ -146,7 +146,7 @@ public constant US is 31
 public constant DEL is 127
 
 // Convert an ASCII character into a byte.
-public function toByte(char v) -> byte:
+public function to_byte(char v) -> byte:
     //
     byte mask = 00000001b
     byte r = 0b
@@ -160,16 +160,16 @@ public function toByte(char v) -> byte:
     return r
 
 // Convert an ASCII string into a list of bytes
-public function toBytes(string s) -> byte[]:
+public function to_bytes(string s) -> byte[]:
     byte[] r = [0b; |s|]
     int i = 0
     while i < |s| where i >= 0:
-        r[i] = toByte(s[i])
+        r[i] = to_byte(s[i])
         i = i + 1
     return r
 
 // Convert a list of bytes into an ASCII string
-public function fromBytes(byte[] data) -> string:
+public function from_bytes(byte[] data) -> string:
     string r = [0; |data|]
     int i = 0
     while i < |data| where i >= 0:
@@ -188,106 +188,18 @@ public function append(string s1, string s2) -> string:
        i = i + 1
     return s3
 
-public function isUpperCase(char c) -> bool:
+public function is_upper_case(char c) -> bool:
     return 'A' <= c && c <= 'Z'
 
-public function isLowerCase(char c) -> bool:
+public function is_lower_case(char c) -> bool:
     return 'a' <= c && c <= 'z'
 
-public function isLetter(char c) -> bool:
+public function is_letter(char c) -> bool:
     return ('a' <= c && c <= 'z') || ('A' <= c && c <= 'Z')
 
-public function isDigit(char c) -> bool:
+public function is_digit(char c) -> bool:
     return '0' <= c && c <= '9'
 
-public function isWhiteSpace(char c) -> bool:
+public function is_whitespace(char c) -> bool:
     return c == ' ' || c == '\t' || c == '\n' || c == '\r'
 
-public function toString(int item) -> string:
-    //
-    bool sign
-    // First, normalise item and record sign
-    if item < 0:
-       sign = false
-       item = -item
-    else:
-       sign = true
-    // Second, determine number of digits.  This is necessary to
-    // avoid unnecessary dynamic memory allocatione    
-    int tmp = item
-    int digits = 0
-    do:
-        tmp = tmp / 10
-        digits = digits + 1
-    while tmp != 0
-    // Finally write digits into resulting string
-    string r = ['0';digits]
-    do:
-        int remainder = item % 10
-        item = item / 10
-        char digit = ('0' + remainder)
-        digits = digits - 1
-        r[digits] = digit
-    while item != 0
-    //
-    if sign:
-        return r
-    else:
-        // This could be optimised!
-        return append("-",r)
-
-/*
-constant digits is [
-    '0','1','2','3','4','5','6','7','8','9',
-    'a','b','c','d','e','f','g','h'
-]
-
-// Convert an integer into a hex string
-public function toHexString(int item) -> string:
-    string r = ""
-    int count = 0
-    int i = item
-    while i > 0:
-        int v = i / 16
-        int w = i % 16
-        count = count + 1
-        i = v
-    //
-    i = count
-    while item > 0:
-        i = i - 1    
-        int v = item / 16
-        int w = item % 16
-        r[i] = digits[w]
-        item = v
-    //
-    return r
-*/
-
-// parse a string representation of an integer value
-public function parseInt(ascii.string input) -> int|null:
-    //
-    // first, check for negative number
-    int start = 0
-    bool negative
-
-    if input[0] == '-':
-        negative = true
-        start = start + 1
-    else:
-        negative = false
-    // now, parse remaining digits
-    int r = 0
-    int i = start
-    while i < |input|:
-        char c = input[i]
-        r = r * 10
-        if !ascii.isDigit(c):
-            return null
-        r = r + ((int) c - '0')
-        i = i + 1
-    // done
-    if negative:
-        return -r
-    else:
-        return r
