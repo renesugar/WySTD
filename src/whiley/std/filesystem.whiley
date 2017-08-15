@@ -24,7 +24,7 @@
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package std
 
-import string from std.ascii
+import string from std::ascii
 
 type uint is (int x) where x >= 0
 
@@ -67,4 +67,4 @@ public constant READWRITE is 1
 public type rwMode is (int x) where (x == READONLY) || (x == READWRITE)
 
 // Create a file object for reading / writing
-public native method open(ascii.string fileName, rwMode mode) -> File
+public native method open(ascii::string fileName, rwMode mode) -> File

@@ -265,7 +265,7 @@ public function toHexString(int item) -> string:
 */
 
 // parse a string representation of an integer value
-public function parseInt(ascii.string input) -> int|null:
+public function parseInt(ascii::string input) -> int|null:
     //
     // first, check for negative number
     int start = 0
@@ -282,7 +282,7 @@ public function parseInt(ascii.string input) -> int|null:
     while i < |input|:
         char c = input[i]
         r = r * 10
-        if !ascii.isDigit(c):
+        if !ascii::isDigit(c):
             return null
         r = r + ((int) c - '0')
         i = i + 1
