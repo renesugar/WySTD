@@ -116,8 +116,8 @@ public function toSignedByte(i8 v) -> byte:
 
 
 // convert a byte into a string
-public function toString(byte b) -> ascii.string:
-    ascii.string r = [0; 'b']
+public function toString(byte b) -> ascii::string:
+    ascii::string r = [0; 'b']
     int i = 0
     while i < 8:
         if (b & 00000001b) == 00000001b:

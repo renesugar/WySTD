@@ -36,13 +36,13 @@ type uint is (int x) where x >= 0
 public native method print(int value)
 
 // Print an ASCII string to stdout
-public native method print(ascii.string value)
+public native method print(ascii::string value)
 
 // Print an integer to stdout (with newline terminator)
 public native method println(int value)
 
 // Print an ASCII string to stdout (with newline terminator)
-public native method println(ascii.string value)
+public native method println(ascii::string value)
 
 // =================================================================
 // Stream Reader

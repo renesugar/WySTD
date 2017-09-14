@@ -97,3 +97,4 @@ ensures x <= |str|:
         i = i + 1
     //
     return len
+
