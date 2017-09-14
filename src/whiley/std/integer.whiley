@@ -25,6 +25,8 @@
 
 package std
 
+import std::ascii
+
 // THIS MODULE IS TO BE DEPRECATED
 
 /**

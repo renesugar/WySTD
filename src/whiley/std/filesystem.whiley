@@ -24,7 +24,7 @@
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package std
 
-import string from std::ascii
+import std::ascii
 
 type uint is (int x) where x >= 0
 
@@ -61,8 +61,8 @@ public type File is  {
     method available() -> uint
 }
 
-public constant READONLY is 0
-public constant READWRITE is 1
+public int READONLY = 0
+public int READWRITE = 1
 
 public type rwMode is (int x) where (x == READONLY) || (x == READWRITE)
 

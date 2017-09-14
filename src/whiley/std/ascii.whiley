@@ -25,6 +25,8 @@
 
 package std
 
+import std::integer
+
 // The ASCII standard (INCITS 4-1986[R2012]) defines a 7bit character
 // encoding.
 public type char is (int x) where 0 <= x && x <= 127
@@ -47,103 +49,103 @@ public type string is char[]
 // === CONTROL CHARACTERS ===
 
 // Null character
-public constant NUL is 0
+public int NUL = 0
 
 // Start of Header
-public constant SOH is 1
+public int SOH = 1
 
 // Start of Text
-public constant STX is 2
+public int STX = 2
 
 // End of Text
-public constant ETX is 3
+public int ETX = 3
 
 // End of Transmission
-public constant EOT is 4
+public int EOT = 4
 
 // Enquiry
-public constant ENQ is 5
+public int ENQ = 5
 
 // Acknowledgment
-public constant ACK is 6
+public int ACK = 6
 
 // Bell
-public constant BEL is 7
+public int BEL = 7
 
 // Backspace
-public constant BS is 8
+public int BS = 8
 
 // Horizontal Tab
-public constant HT is 9
+public int HT = 9
 
 // Line Feed
-public constant LF is 10
+public int LF = 10
 
 // Vertical Tab
-public constant VT is 11
+public int VT = 11
 
 // Form Feed
-public constant FF is 12
+public int FF = 12
 
 // Carriage Return
-public constant CR is 13
+public int CR = 13
 
 // Shift Out
-public constant SO is 14
+public int SO = 14
 
 // Shift In
-public constant SI is 15
+public int SI = 15
 
 // Data Link Escape
-public constant DLE is 16
+public int DLE = 16
 
 // Device Control 1
-public constant DC1 is 17
+public int DC1 = 17
 
 // Device Control 2
-public constant DC2 is 18
+public int DC2 = 18
 
 // Device Control 3
-public constant DC3 is 19
+public int DC3 = 19
 
 // Device Control 4
-public constant DC4 is 20
+public int DC4 = 20
 
 // Negative Acknowledgement
-public constant NAK is 21
+public int NAK = 21
 
 // Synchronous Idle
-public constant SYN is 22
+public int SYN = 22
 
 // End of Transmission Block
-public constant ETB is 23
+public int ETB = 23
 
 // Cancel
-public constant CAN is 24
+public int CAN = 24
 
 // End of Medium
-public constant EM is 25
+public int EM = 25
 
 // Substitute
-public constant SUB is 26
+public int SUB = 26
 
 // Escape
-public constant ESC is 27
+public int ESC = 27
 
 // File Separator
-public constant FS is 28
+public int FS = 28
 
 // Group Separator
-public constant GS is 29
+public int GS = 29
 
 // Record Separator
-public constant RS is 30
+public int RS = 30
 
 // Unit Separator
-public constant US is 31
+public int US = 31
 
 // Delete
-public constant DEL is 127
+public int DEL = 127
 
 // Convert an ASCII character into a byte.
 public function toByte(char v) -> byte:
@@ -173,7 +175,7 @@ public function fromBytes(byte[] data) -> string:
     string r = [0; |data|]
     int i = 0
     while i < |data| where i >= 0:
-        r[i] = integer.toInt(data[i])
+        r[i] = integer::toInt(data[i])
         i = i + 1
     return r
 
