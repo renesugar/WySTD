@@ -179,7 +179,13 @@ public function fromBytes(byte[] data) -> string:
         i = i + 1
     return r
 
-public function append(string s1, string s2) -> string:
+public function append(string s1, string s2) -> (string r)
+// Resulting array exactly size of s1 and s2 together 
+ensures |r| == |s1| + |s2|
+// Elements of s1 are stored first in result
+ensures all { k in 0..|s1| | r[k] == s1[k] }
+// Elemnts of s2 are stored after those of s1
+ensures all { k in 0..|s2| | r[k+|s1|] == s1[k] }:
     string s3 = [0; |s1| + |s2|]
     int i = 0
     while i < |s3|:

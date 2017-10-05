@@ -15,7 +15,7 @@
   <!-- Enable/disable verification -->
   <property name="wyc.verification" value="false"/>
   <!-- Enable/disable verification condition generation -->  
-  <property name="wyc.vcg" value="false"/>
+  <property name="wyc.vcg" value="true"/>
   <!-- Define destination for jar -->
   <property name="LIB_DIR" value="lib/"/>
   <!-- Load the Maven Ant tasks so that we can work with Maven repositories. -->
@@ -28,7 +28,7 @@
     <dependency groupId="org.whiley" artifactId="wyjc" version="0.4.6"/>
   </maven:dependencies>
   <maven:dependencies pathId="wyjs.jar">
-    <dependency groupId="org.whiley" artifactId="wyjs" version="0.4.2"/>
+    <dependency groupId="org.whiley" artifactId="wyjs" version="0.4"/>
   </maven:dependencies>
   <!-- Define the WyC build task -->
   <taskdef name="wyc" classname="wyc.util.AntTask">

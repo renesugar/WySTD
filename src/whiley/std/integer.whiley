@@ -132,7 +132,7 @@ public function toString(byte b) -> ascii::string:
 
 // Convert a byte into an unsigned int.  This assumes a little endian
 // encoding.
-public function toUnsignedInt(byte b) -> uint:
+public function toUnsignedInt(byte b) -> u8:
     int r = 0
     int base = 1
     while b != 0b:
